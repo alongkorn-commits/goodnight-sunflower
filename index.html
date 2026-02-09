@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ฝันดีนะ 🌙</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(
+        180deg,
+        #0b132b 0%,
+        #1c2541 55%,
+        #102a1f 100%
+    );
+    color: white;
+}
+
+/* ข้อความ */
+.center-text {
+    position: absolute;
+    top: 35%;
+    width: 100%;
+    text-align: center;
+    z-index: 30;
+}
+.center-text h1 {
+    font-size: 3.2em;
+    margin: 0;
+}
+.center-text p {
+    font-size: 1.2em;
+    opacity: 0.85;
+}
+
+/* พระจันทร์ */
+.moon {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at 30% 30%, #fffde4, #f1edc5);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 60px rgba(255,255,220,0.75);
+    animation: moonFloat 8s ease-in-out infinite;
+    z-index: 5;
+}
+@keyframes moonFloat {
+    0% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 22px); }
+    100% { transform: translate(-50%, 0); }
+}
+
+/* ดาว */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2.5s infinite alternate;
+    z-index: 1;
+}
+@keyframes twinkle {
+    from { opacity: 0.2; }
+    to { opacity: 1; }
+}
+
+/* เมฆ */
+.cloud {
+    position: absolute;
+    top: var(--y);
+    left: -30%;
+    width: 220px;
+    height: 60px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50px;
+    filter: blur(2px);
+    animation: cloudMove var(--dur) linear infinite;
+    z-index: 4;
+}
+.cloud::before,
+.cloud::after {
+    content: "";
+    position: absolute;
+    background: rgba(255,255,255,0.12);
+    width: 100px;
+    height: 60px;
+    border-radius: 50%;
+    top: -30px;
+}
+.cloud::before { left: 30px; }
+.cloud::after { right: 30px; }
+
+@keyframes cloudMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(160vw); }
+}
+
+/* นก */
+.bird {
+    position: absolute;
+    top: var(--y);
+    left: -10%;
+    font-size: 18px;
+    opacity: 0.6;
+    animation: birdFly var(--dur) linear infinite;
+    z-index: 6;
+}
+@keyframes birdFly {
+    from { transform: translateX(0); }
+    to { transform: translateX(130vw); }
+}
+
+/* ทุ่ง */
+.field {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    z-index: 10;
+}
+
+/* ทานตะวัน */
+.sunflower {
+    position: absolute;
+    bottom: 0;
+    transform-origin: bottom center;
+    animation: wind var(--dur) ease-in-out infinite;
+}
+
+@keyframes wind {
+    0%   { transform: rotate(var(--a)); }
+    50%  { transform: rotate(var(--b)); }
+    100% { transform: rotate(var(--a)); }
+}
+
+.stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 8px;
+    height: var(--stem);
+    background: linear-gradient(180deg, #3f8b5a, #245c3c);
+    transform: translateX(-50%);
+    border-radius: 6px;
+}
+
+.leaf {
+    position: absolute;
+    width: 24px;
+    height: 16px;
+    background: #2f6b3f;
+    border-radius: 50% 50% 50% 0;
+}
+.leaf.left { left: -18px; top: 55%; transform: rotate(-30deg); }
+.leaf.right { right: -18px; top: 65%; transform: rotate(30deg) scaleX(-1); }
+
+.flower {
+    position: absolute;
+    bottom: var(--stem);
+    left: 50%;
+    width: var(--flower);
+    height: var(--flower);
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #ffdf6c 45%, #f4c430);
+    border-radius: 50%;
+    box-shadow: 0 0 18px rgba(255,220,120,0.7);
+}
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 45%;
+    height: 45%;
+    background: radial-gradient(circle, #7a4a1d, #3b220f);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
+</head>
+
+<body>
+
+<div class="moon"></div>
+
+<div class="center-text">
+    <h1>ฝันดีนะ 🌙</h1>
+    <p>เจ้าทานตะวัน</p>
+</div>
+
+<div class="field" id="field"></div>
+
+<script>
+// ดาว
+for (let i = 0; i < 90; i++) {
+    const s = document.createElement("div");
+    s.className = "star";
+    s.style.top = Math.random() * 60 + "vh";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    document.body.appendChild(s);
+}
+
+// เมฆ
+for (let i = 0; i < 4; i++) {
+    const c = document.createElement("div");
+    c.className = "cloud";
+    c.style.setProperty("--y", Math.random() * 30 + 5 + "vh");
+    c.style.setProperty("--dur", Math.random() * 40 + 50 + "s");
+    document.body.appendChild(c);
+}
+
+// นก
+for (let i = 0; i < 3; i++) {
+    const b = document.createElement("div");
+    b.className = "bird";
+    b.textContent = "🕊️";
+    b.style.setProperty("--y", Math.random() * 25 + 10 + "vh");
+    b.style.setProperty("--dur", Math.random() * 20 + 25 + "s");
+    document.body.appendChild(b);
+}
+
+// ทุ่ง
+const field = document.getElementById("field");
+function addLayer(count, scale, opacity) {
+    for (let i = 0; i < count; i++) {
+        const stem = Math.random() * 70 + 80;
+        const flower = Math.random() * 20 + 40;
+        const a = (Math.random() * 8 - 4) + "deg";
+        const b = (Math.random() * 8 - 4) + "deg";
+        const dur = Math.random() * 3 + 4;
+
+        const sf = document.createElement("div");
+        sf.className = "sunflower";
+        sf.style.left = Math.random() * 100 + "%";
+        sf.style.opacity = opacity;
+        sf.style.transform += ` scale(${scale})`;
+        sf.style.setProperty("--stem", stem + "px");
+        sf.style.setProperty("--flower", flower + "px");
+        sf.style.setProperty("--a", a);
+        sf.style.setProperty("--b", b);
+        sf.style.setProperty("--dur", dur + "s");
+
+        sf.innerHTML = `
+            <div class="flower"><div class="center"></div></div>
+            <div class="stem"></div>
+            <div class="leaf left"></div>
+            <div class="leaf right"></div>
+        `;
+        field.appendChild(sf);
+    }
+}
+addLayer(25, 0.7, 0.6);
+addLayer(35, 0.9, 0.8);
+addLayer(45, 1.1, 1);
+</script>
+
+</body>
+</html>
